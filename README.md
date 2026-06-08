@@ -120,7 +120,6 @@ Build the desktop app for your platform:
 # Build for current platform
 bun run build
 
-# The compiled app will be in: src-tauri/target/release/bundle/
 ```
 
 **Output locations:**
