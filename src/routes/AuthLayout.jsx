@@ -1,6 +1,8 @@
-import styles from "./layout.module.css";
+import { Suspense } from "react";
+import { Outlet } from "react-router-dom";
+import styles from "./AuthLayout.module.css";
 
-export default function AuthLayout({ children }) {
+export default function AuthLayout() {
   return (
     <div className={styles.root}>
       <div className="auth-bg" />
@@ -11,7 +13,9 @@ export default function AuthLayout({ children }) {
 
       <main className={styles.main}>
         <div className={styles.card}>
-          {children}
+          <Suspense fallback={null}>
+            <Outlet />
+          </Suspense>
         </div>
 
         <p className={styles.brand}>

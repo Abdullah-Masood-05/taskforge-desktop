@@ -1,18 +1,14 @@
-"use client";
-
 /**
  * Project list page for an organization.
- * Route: /orgs/[slug]/projects
+ * Route: /orgs/:slug/projects
  */
 
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link, useParams } from "react-router-dom";
 import { useProjects, useCreateProject, useArchiveProject, useDeleteProject } from "@/lib/hooks/useTasks";
-import styles from "./page.module.css";
+import styles from "./ProjectsPage.module.css";
 
 function ProjectCard({ project, orgSlug, onArchive, onDelete }) {
-  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -51,7 +47,7 @@ function ProjectCard({ project, orgSlug, onArchive, onDelete }) {
         </div>
       </div>
 
-      <Link href={`/orgs/${orgSlug}/projects/${project.id}/board`} className={styles.cardLink}>
+      <Link to={`/orgs/${orgSlug}/projects/${project.id}/board`} className={styles.cardLink}>
         <h3 className={styles.cardName}>{project.name}</h3>
         {project.description && (
           <p className={styles.cardDesc}>{project.description}</p>

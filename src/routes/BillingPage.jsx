@@ -1,10 +1,7 @@
-"use client";
-
-import { use } from "react";
-import { useSearchParams } from "next/navigation";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { Topbar } from "@/components/layout/Topbar";
 import { useBillingStatus, useOpenPortal } from "@/lib/hooks/useBilling";
-import styles from "./page.module.css";
+import styles from "./BillingPage.module.css";
 
 const PLAN_LABELS = {
   free: "Free",
@@ -21,9 +18,9 @@ const STATUS_LABELS = {
   "": "—",
 };
 
-export default function BillingPage({ params }) {
-  const { slug } = use(params);
-  const searchParams = useSearchParams();
+export default function BillingPage() {
+  const { slug } = useParams();
+  const [searchParams] = useSearchParams();
   const checkoutSuccess = searchParams.get("checkout") === "success";
 
   const { data: billing, isLoading } = useBillingStatus(slug);
@@ -77,12 +74,12 @@ export default function BillingPage({ params }) {
 
           <div className={styles.cardActions}>
             {billing?.plan === "free" ? (
-              <a href={`/orgs/${slug}/pricing`} className={styles.upgradeBtn} id="upgrade-plan-btn">
+              <Link to={`/orgs/${slug}/pricing`} className={styles.upgradeBtn} id="upgrade-plan-btn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="m5 12 7-7 7 7M12 5v14" />
                 </svg>
                 Upgrade Plan
-              </a>
+              </Link>
             ) : (
               <button
                 id="manage-billing-btn"
@@ -107,9 +104,9 @@ export default function BillingPage({ params }) {
             <FeatureRow label="Priority support" free="—" pro="Email" business="Dedicated" />
           </div>
           {billing?.plan === "free" && (
-            <a href={`/orgs/${slug}/pricing`} className={styles.pricingLink}>
+            <Link to={`/orgs/${slug}/pricing`} className={styles.pricingLink}>
               See full pricing →
-            </a>
+            </Link>
           )}
         </div>
       </main>

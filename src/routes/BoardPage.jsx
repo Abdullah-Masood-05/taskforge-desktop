@@ -1,8 +1,6 @@
-"use client";
-
 /**
  * Kanban board page.
- * Route: /orgs/[slug]/projects/[projectId]/board
+ * Route: /orgs/:slug/projects/:projectId/board
  *
  * Real-time updates: useProjectBoard opens a WebSocket to
  * ws://.../ws/projects/{projectId}/board/?token=<jwt>
@@ -10,11 +8,16 @@
  */
 
 import { useState, useCallback } from "react";
-import { useParams } from "next/navigation";
-import Link from "next/link";
+import { Link, useParams } from "react-router-dom";
 import { KanbanBoard } from "@/components/tasks/KanbanBoard";
 import { TaskDetailModal } from "@/components/tasks/TaskDetailModal";
 import { NewTaskModal } from "@/components/tasks/NewTaskModal";
+import { ProjectHeader } from "@/components/tasks/ProjectHeader";
+import { BoardToolbar } from "@/components/tasks/BoardToolbar";
+import { ProjectTimeline } from "@/components/tasks/ProjectTimeline";
+import { TeamVelocityChart } from "@/components/tasks/TeamVelocityChart";
+import { TaskDistributionChart } from "@/components/tasks/TaskDistributionChart";
+import { ActivityFeed } from "@/components/tasks/ActivityFeed";
 import {
   useProject,
   useProjectStatuses,
@@ -26,7 +29,7 @@ import {
 import { useProjectBoard } from "@/lib/hooks/useProjectBoard";
 import { orgsApi } from "@/lib/api/orgs";
 import { useQuery } from "@tanstack/react-query";
-import styles from "./page.module.css";
+import styles from "./BoardPage.module.css";
 
 function useOrgMembers(orgSlug) {
   return useQuery({
@@ -47,7 +50,11 @@ export default function BoardPage() {
   // Data
   const { data: project } = useProject(slug, projectId);
   const { data: statuses = [], isLoading: statusesLoading } = useProjectStatuses(slug, projectId);
-  const { data: tasks = [], isLoading: tasksLoading } = useTasks(slug, projectId, filters);
+  // page_size=100 is the API max — fills board columns on large projects
+  const { data: tasks = [], isLoading: tasksLoading } = useTasks(slug, projectId, {
+    ...filters,
+    page_size: 100,
+  });
   const { data: members = [] } = useOrgMembers(slug);
 
   // Real-time WebSocket sync — keeps task cache live across all tabs
@@ -80,7 +87,7 @@ export default function BoardPage() {
       {/* ── Topbar ──────────────────────────────────────────────────────────── */}
       <div className={styles.topbar}>
         <div className={styles.breadcrumb}>
-          <Link href={`/orgs/${slug}/projects`} className={styles.breadLink}>
+          <Link to={`/orgs/${slug}/projects`} className={styles.breadLink}>
             Projects
           </Link>
           <span className={styles.breadSep}>/</span>
@@ -167,24 +174,48 @@ export default function BoardPage() {
         </div>
       )}
 
-      {/* ── Board ───────────────────────────────────────────────────────────── */}
-      <div className={styles.boardWrap}>
-        {isLoading ? (
-          <div className={styles.loadingRow}>
-            {[1, 2, 3].map((n) => (
-              <div key={n} className={styles.skeletonCol} />
-            ))}
-          </div>
-        ) : (
-          <KanbanBoard
-            statuses={statuses}
-            tasks={tasks}
-            onMove={handleMove}
-            onAddTask={handleAddTask}
-            onAddColumn={handleAddColumn}
-            onCardOpen={setSelectedTask}
+      {/* ── Project header ("mission control") ─────────────────────────────── */}
+      <ProjectHeader
+        project={project}
+        orgSlug={slug}
+        projectId={projectId}
+        onAddTask={() => setShowNewTask(true)}
+      />
+
+      {/* ── Board + analytics rail ─────────────────────────────────────────── */}
+      <div className={styles.contentRow}>
+        <div className={styles.boardCol}>
+          <BoardToolbar
+            orgSlug={slug}
+            projectId={projectId}
+            onAddTask={() => setShowNewTask(true)}
           />
-        )}
+          <div className={styles.boardWrap}>
+            {isLoading ? (
+              <div className={styles.loadingRow}>
+                {[1, 2, 3].map((n) => (
+                  <div key={n} className={styles.skeletonCol} />
+                ))}
+              </div>
+            ) : (
+              <KanbanBoard
+                statuses={statuses}
+                tasks={tasks}
+                onMove={handleMove}
+                onAddTask={handleAddTask}
+                onAddColumn={handleAddColumn}
+                onCardOpen={setSelectedTask}
+              />
+            )}
+          </div>
+        </div>
+
+        <aside className={styles.rail} aria-label="Project analytics">
+          <ProjectTimeline orgSlug={slug} projectId={projectId} />
+          <TeamVelocityChart orgSlug={slug} projectId={projectId} />
+          <TaskDistributionChart orgSlug={slug} projectId={projectId} />
+          <ActivityFeed orgSlug={slug} projectId={projectId} />
+        </aside>
       </div>
 
       {/* ── Task detail modal ────────────────────────────────────────────────── */}

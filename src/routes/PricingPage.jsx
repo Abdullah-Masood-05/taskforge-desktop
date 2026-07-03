@@ -1,9 +1,7 @@
-"use client";
-
-import { use } from "react";
+import { useParams } from "react-router-dom";
 import { Topbar } from "@/components/layout/Topbar";
 import { useBillingStatus, useCreateCheckout } from "@/lib/hooks/useBilling";
-import styles from "./page.module.css";
+import styles from "./PricingPage.module.css";
 
 const PLANS = [
   {
@@ -47,7 +45,7 @@ const PLANS = [
       "Notifications digest",
     ],
     cta: "Upgrade to Pro",
-    priceIdKey: "NEXT_PUBLIC_STRIPE_PRO_PRICE_ID",
+    priceIdKey: "VITE_STRIPE_PRO_PRICE_ID",
   },
   {
     id: "business",
@@ -69,20 +67,20 @@ const PLANS = [
       "Audit log export",
     ],
     cta: "Upgrade to Business",
-    priceIdKey: "NEXT_PUBLIC_STRIPE_BUSINESS_PRICE_ID",
+    priceIdKey: "VITE_STRIPE_BUSINESS_PRICE_ID",
   },
 ];
 
-export default function PricingPage({ params }) {
-  const { slug } = use(params);
+export default function PricingPage() {
+  const { slug } = useParams();
   const { data: billing } = useBillingStatus(slug);
   const currentPlan = billing?.plan ?? "free";
   const checkout = useCreateCheckout(slug);
 
   const handleUpgrade = (plan) => {
-    const priceId = process.env[plan.priceIdKey];
+    const priceId = import.meta.env[plan.priceIdKey];
     if (!priceId) {
-      alert("Stripe price ID is not configured. Add NEXT_PUBLIC_STRIPE_*_PRICE_ID to your .env.local.");
+      alert("Stripe price ID is not configured. Add VITE_STRIPE_*_PRICE_ID to your .env.");
       return;
     }
     checkout.mutate(priceId);

@@ -1,25 +1,34 @@
-"use client";
-
-import { useState, use } from "react";
-import { notFound } from "next/navigation";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { Topbar } from "@/components/layout/Topbar";
 import { MemberTable } from "@/components/orgs/MemberTable";
 import { InviteModal } from "@/components/orgs/InviteModal";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { ErrorState } from "@/components/ui/ErrorState";
 import { useOrg, useOrgMembers } from "@/lib/hooks/useOrgs";
 import { useAuthStore } from "@/lib/store/authStore";
-import styles from "./page.module.css";
+import styles from "./OrgDetailPage.module.css";
 
-export default function OrgDetailPage({ params }) {
-  const { slug } = use(params);
+export default function OrgDetailPage() {
+  const { slug } = useParams();
   const user = useAuthStore((s) => s.user);
   const [inviteOpen, setInviteOpen] = useState(false);
 
   const { data: org, isLoading: orgLoading, isError: orgError } = useOrg(slug);
   const { data: members, isLoading: membersLoading } = useOrgMembers(slug);
 
-  if (orgError) notFound();
+  if (orgError) {
+    return (
+      <ErrorState
+        title="Organization not found"
+        error={{
+          status: 404,
+          message: "This organization does not exist or you do not have access to it.",
+        }}
+      />
+    );
+  }
 
   const currentMembership = members?.find((m) => m.user_email === user?.email);
   const isAdmin = currentMembership?.role === "admin";

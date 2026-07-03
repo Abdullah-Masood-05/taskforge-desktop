@@ -1,9 +1,9 @@
 import { Skeleton } from "@/components/ui/Skeleton";
 
 /**
- * Route-level loading fallback for dashboard segments. Shown during navigation
- * while the target page's code/data resolves. Pages also keep their own
- * in-component skeletons for client-side React Query fetches.
+ * Loading fallback for dashboard routes. Shown while a lazy-loaded page's
+ * code resolves. Pages also keep their own in-component skeletons for
+ * client-side React Query fetches.
  */
 export default function DashboardLoading() {
   return (

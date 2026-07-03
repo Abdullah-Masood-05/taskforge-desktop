@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Topbar } from "@/components/layout/Topbar";
 import { OrgCard } from "@/components/orgs/OrgCard";
@@ -12,7 +10,7 @@ import { ApiError } from "@/lib/api/client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import styles from "./page.module.css";
+import styles from "./DashboardPage.module.css";
 
 const createOrgSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
