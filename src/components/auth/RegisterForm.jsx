@@ -1,11 +1,8 @@
-"use client";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { ApiError } from "@/lib/api/client";
 import { Button } from "@/components/ui/Button";
@@ -27,7 +24,7 @@ const schema = z
 
 export function RegisterForm() {
   const { register: registerUser } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [serverError, setServerError] = useState(null);
 
   const {
@@ -41,7 +38,7 @@ export function RegisterForm() {
     setServerError(null);
     try {
       await registerUser(data);
-      router.replace("/");
+      navigate("/", { replace: true });
     } catch (err) {
       if (err instanceof ApiError) {
         if (err.errors) {
@@ -130,7 +127,7 @@ export function RegisterForm() {
 
       <p className={styles.footer}>
         Already have an account?{" "}
-        <Link href="/login" className={styles.link}>
+        <Link to="/login" className={styles.link}>
           Sign in
         </Link>
       </p>

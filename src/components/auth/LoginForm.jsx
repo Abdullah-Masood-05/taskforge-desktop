@@ -1,11 +1,8 @@
-"use client";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { ApiError } from "@/lib/api/client";
 import { Button } from "@/components/ui/Button";
@@ -19,8 +16,8 @@ const schema = z.object({
 
 export function LoginForm() {
   const { login } = useAuth();
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [serverError, setServerError] = useState(null);
 
   const {
@@ -35,7 +32,7 @@ export function LoginForm() {
     try {
       await login(data);
       const from = searchParams.get("from") ?? "/";
-      router.replace(from);
+      navigate(from, { replace: true });
     } catch (err) {
       if (err instanceof ApiError) {
         if (err.status === 401 || err.status === 400) {
@@ -92,7 +89,7 @@ export function LoginForm() {
 
       <p className={styles.footer}>
         Don&apos;t have an account?{" "}
-        <Link href="/register" className={styles.link}>
+        <Link to="/register" className={styles.link}>
           Create one
         </Link>
       </p>

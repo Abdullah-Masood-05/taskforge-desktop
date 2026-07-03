@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/lib/store/authStore";
 import { authApi } from "@/lib/api/auth";
 
@@ -8,19 +8,19 @@ import { authApi } from "@/lib/api/auth";
  * Bridges UI actions with the API and the Zustand store.
  */
 export function useAuth() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { user, tokens, isAuthenticated, setAuth, setUser, clearAuth } = useAuthStore();
 
   // Listen for background expirations fired from apiClient.js
   useEffect(() => {
     const handleExpired = () => {
       clearAuth();
-      router.push("/login?expired=1");
+      navigate("/login?expired=1");
     };
 
     window.addEventListener("taskforge:auth:expired", handleExpired);
     return () => window.removeEventListener("taskforge:auth:expired", handleExpired);
-  }, [clearAuth, router]);
+  }, [clearAuth, navigate]);
 
   const login = async (credentials) => {
     const res = await authApi.login(credentials);
@@ -42,7 +42,7 @@ export function useAuth() {
       }
     }
     clearAuth();
-    router.push("/login");
+    navigate("/login");
   };
 
   const updateProfile = async (data) => {

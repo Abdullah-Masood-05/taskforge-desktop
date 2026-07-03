@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { attachmentsApi } from "@/lib/api/notifications";

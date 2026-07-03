@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * KanbanBoard — the main board container.
  *

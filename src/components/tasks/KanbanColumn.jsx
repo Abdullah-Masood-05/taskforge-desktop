@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * KanbanColumn — a single droppable Kanban column.
  * Contains task cards and an "Add card" quick-entry form.
@@ -35,7 +33,7 @@ export function KanbanColumn({ status, tasks, onCardOpen, onAddTask, isAddingTas
             style={{ background: status.color }}
           />
           <h3 className={styles.columnTitle}>{status.name}</h3>
-          <span className={styles.columnCount}>{tasks.length}</span>
+          <span className={styles.columnCount}>{status.task_count ?? tasks.length}</span>
         </div>
         <button
           className={styles.addCardBtn}

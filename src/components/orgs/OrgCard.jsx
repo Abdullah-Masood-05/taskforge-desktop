@@ -1,6 +1,4 @@
-"use client";
-
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardBody } from "@/components/ui/Card";
 import styles from "./OrgCard.module.css";
@@ -15,7 +13,7 @@ const BuildingIcon = () => (
 
 export function OrgCard({ org }) {
   return (
-    <Link href={`/orgs/${org.slug}`} className={styles.link}>
+    <Link to={`/orgs/${org.slug}`} className={styles.link}>
       <Card hoverable className={styles.card}>
         <CardBody>
           <div className={styles.header}>

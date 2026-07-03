@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * TaskDetailModal — full task view with editing, subtasks, comments, activity.
  *

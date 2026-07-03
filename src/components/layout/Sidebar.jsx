@@ -1,7 +1,4 @@
-"use client";
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, useLocation } from "react-router-dom";
 import { useOrgs } from "@/lib/hooks/useOrgs";
 import { useAuthStore } from "@/lib/store/authStore";
 import styles from "./Sidebar.module.css";
@@ -38,14 +35,14 @@ const Icon = ({ name, className }) => {
 };
 
 export function Sidebar() {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
   const { data: orgs } = useOrgs();
   const { user, logout } = useAuthStore();
 
   return (
     <aside className={styles.sidebar}>
       <div className={styles.logoArea}>
-        <Link href="/" className={styles.logo}>
+        <Link to="/" className={styles.logo}>
           <span className={styles.logoIcon}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <polygon points="12 2 2 7 12 12 22 7 12 2" />
@@ -67,7 +64,7 @@ export function Sidebar() {
           return (
             <Link
               key={item.href}
-              href={item.href}
+              to={item.href}
               className={[styles.navItem, isActive ? styles.navItemActive : ""].join(" ")}
             >
               <Icon name={item.icon} className={styles.navIcon} />
@@ -88,7 +85,7 @@ export function Sidebar() {
               return (
                 <li key={org.id}>
                   <Link
-                    href={`/orgs/${org.slug}`}
+                    to={`/orgs/${org.slug}`}
                     className={[styles.orgLink, isOrgActive && !isProjectsActive ? styles.orgActive : ""].join(" ")}
                   >
                     <span className={styles.orgInitial}>{org.name.charAt(0)}</span>
@@ -96,7 +93,7 @@ export function Sidebar() {
                   </Link>
                   {isOrgActive && (
                     <Link
-                      href={`/orgs/${org.slug}/projects`}
+                      to={`/orgs/${org.slug}/projects`}
                       className={[styles.subLink, isProjectsActive ? styles.subLinkActive : ""].join(" ")}
                     >
                       <Icon name="folder" className={styles.subIcon} />

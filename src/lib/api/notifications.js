@@ -57,7 +57,7 @@ export const attachmentsApi = {
     // Use native fetch so we can track progress and avoid JSON serialisation
     return import("./client").then(({ apiClient: _, ...rest }) =>
       fetch(
-        `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/api/v1/tasks/${taskId}/attachments/upload-local/`,
+        `${import.meta.env.VITE_API_URL ?? "http://localhost:8000"}/api/v1/tasks/${taskId}/attachments/upload-local/`,
         {
           method: "POST",
           headers: buildAuthHeaders(),

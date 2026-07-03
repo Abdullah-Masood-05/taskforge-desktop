@@ -7,8 +7,8 @@
  * vs. the production-hardened approach of httpOnly cookies.
  * The localStorage key is namespaced to avoid collisions.
  *
- * A lightweight non-sensitive cookie "taskforge_authenticated" is also set so
- * Next.js Edge Middleware can check auth state without accessing localStorage.
+ * Route protection reads `isAuthenticated` from this store directly
+ * (see src/routes/ProtectedRoute.jsx).
  *
  * Zustand owns WHO the user is.
  * TanStack Query owns WHAT data is on screen.
@@ -16,20 +16,6 @@
  */
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-
-// ── Cookie helpers for middleware visibility ──────────────────────────────────
-function setAuthCookie() {
-  if (typeof document !== "undefined") {
-    document.cookie = "taskforge_authenticated=1; path=/; SameSite=Lax";
-  }
-}
-
-function clearAuthCookie() {
-  if (typeof document !== "undefined") {
-    document.cookie =
-      "taskforge_authenticated=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
-  }
-}
 
 export const useAuthStore = create(
   persist(
@@ -39,7 +25,6 @@ export const useAuthStore = create(
       isAuthenticated: false,
 
       setAuth: (user, tokens) => {
-        setAuthCookie();
         set({ user, tokens, isAuthenticated: true });
       },
 
@@ -48,7 +33,6 @@ export const useAuthStore = create(
       setTokens: (tokens) => set({ tokens }),
 
       clearAuth: () => {
-        clearAuthCookie();
         set({ user: null, tokens: null, isAuthenticated: false });
       },
     }),

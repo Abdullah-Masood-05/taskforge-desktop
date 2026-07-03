@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useCreateTask } from "@/lib/hooks/useTasks";
 import styles from "./NewTaskModal.module.css";

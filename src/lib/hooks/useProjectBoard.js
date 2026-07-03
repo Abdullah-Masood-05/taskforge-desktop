@@ -1,14 +1,8 @@
-"use client";
-
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/lib/store/authStore";
 
-const WS_BASE =
-  process.env.NEXT_PUBLIC_WS_URL ||
-  (typeof window !== "undefined"
-    ? window.location.origin.replace(/^http/, "ws")
-    : "ws://localhost:8000");
+const WS_BASE = import.meta.env.VITE_WS_URL || "ws://localhost:8000";
 
 const MAX_RETRIES = 5;
 const INITIAL_BACKOFF_MS = 1000;
@@ -34,7 +28,7 @@ const INITIAL_BACKOFF_MS = 1000;
  */
 export function useProjectBoard(projectId) {
   const queryClient = useQueryClient();
-  const { accessToken } = useAuthStore();
+  const accessToken = useAuthStore((s) => s.tokens?.access);
 
   const wsRef = useRef(null);
   const retriesRef = useRef(0);

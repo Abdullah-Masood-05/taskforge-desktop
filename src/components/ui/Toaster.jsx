@@ -1,5 +1,3 @@
-"use client";
-
 import { useToastStore } from "@/lib/store/toastStore";
 import styles from "./Toaster.module.css";
 
