@@ -1,5 +1,10 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# TaskForge Desktop — agent notes
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+This app is Vite + React (JavaScript, CSS Modules) wrapped in Tauri 2.
+Routing is react-router-dom with HashRouter — there is no server runtime,
+no file-based routing, and no Next.js APIs anywhere in this repo.
+
+- Env vars are `import.meta.env.VITE_*` (see `.env.example`).
+- Auth gating lives in `src/routes/ProtectedRoute.jsx`, not middleware.
+- The Rust side (`src-tauri/`) rarely needs changes; its CSP allowlist in
+  `tauri.conf.json` must cover any new remote hosts you introduce.

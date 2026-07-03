@@ -1,21 +1,26 @@
-# TaskForge Frontend
+# TaskForge Desktop
 
-[![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=0B1F26)](https://react.dev)
 [![Tauri](https://img.shields.io/badge/Tauri-2-24C6DC?logo=tauri&logoColor=white)](https://tauri.app)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2024-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Bun](https://img.shields.io/badge/Bun-latest-000000?logo=bun&logoColor=white)](https://bun.sh)
 [![CSS Modules](https://img.shields.io/badge/CSS%20Modules-styled-1572B6?logo=css3&logoColor=white)](https://github.com/css-modules/css-modules)
 
-A modern, full-featured frontend for TaskForge built with Next.js 16 and React 19. This application provides the user-facing web interface for task and organization management, featuring real-time state management, form validation, and a sleek dark-themed UI with glassmorphism design patterns.
+The native desktop app for TaskForge — the same task and organization management UI as the web client, built with Vite + React 19 and React Router, packaged as a lightweight Windows/macOS/Linux application with Tauri 2. Ships the full project dashboard: Kanban board, progress header, timeline, velocity and distribution analytics, and a live activity feed.
 
-**🖥️ This branch (`tauri-desktop-app`) includes a Tauri desktop application setup for running TaskForge as a native desktop app on Windows, macOS, and Linux. See [Desktop App (Tauri)](#desktop-app-tauri) below for details.**
+**🖥️ There is no server runtime in this app — the UI is a static Vite bundle served inside a Tauri webview, talking to the TaskForge backend API over HTTP/WebSocket (see `.env.example`).**
 
 ## Features
 
 - **Authentication System**: Secure login/registration with JWT token management
 - **Organization Management**: Create, manage, and invite team members to organizations
 - **Dashboard**: Central hub for viewing and managing tasks and team information
+- **Project Mission Control**: per-project dashboard with a progress header, Gantt-style
+  timeline, weekly velocity chart, priority distribution donut and a live activity feed
+- **Kanban Board**: real-time drag-and-drop board with multi-assignee avatar clusters,
+  colored labels, due dates and per-card progress pills
+- **Project Import/Export**: portable JSON project templates with a preview-before-import flow
 - **Real-time UI Updates**: Powered by React Query for efficient server state management
 - **Custom Design System**: Glassmorphism dark theme with pure CSS and CSS Modules
 - **Form Validation**: Robust form handling with React Hook Form and Zod
@@ -24,11 +29,12 @@ A modern, full-featured frontend for TaskForge built with Next.js 16 and React 1
 
 ## Tech Stack
 
-- **Framework**: [Next.js 16](https://nextjs.org) (App Router)
+- **Framework**: [Vite 8](https://vite.dev) + [React Router](https://reactrouter.com) (HashRouter)
 - **Desktop**: [Tauri 2](https://tauri.app) - Native desktop app framework
 - **Backend**: [Rust](https://www.rust-lang.org) (Tauri backend)
 - **Runtime**: [Bun](https://bun.sh)
 - **Language**: JavaScript (ES2024) + Rust
+- **Charts**: `recharts` - Dashboard analytics (velocity & distribution)
 - **Styling**: Pure CSS with CSS Modules + Custom Design System
 - **State Management**: 
   - `zustand` - Client/auth state
@@ -61,14 +67,13 @@ A modern, full-featured frontend for TaskForge built with Next.js 16 and React 1
    ```
 
 3. **Configure environment variables:**
-   ```bash
-   cp .env.local.example .env.local
-   ```
-   
-   Update `.env.local` with your configuration:
+
+   Update `.env` in the project root with your configuration:
    ```env
-   NEXT_PUBLIC_API_URL=http://localhost:8000
+   VITE_API_URL=http://localhost:8000
+   VITE_WS_URL=ws://localhost:8000
    ```
+   Production values live in `.env.production` and are used by `bun run build`.
 
 4. **Start the development server:**
    ```bash
@@ -76,7 +81,7 @@ A modern, full-featured frontend for TaskForge built with Next.js 16 and React 1
    ```
 
 5. **Open your browser:**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+   Navigate to [http://localhost:5173](http://localhost:5173)
 
 ## Desktop App (Tauri)
 
@@ -102,10 +107,10 @@ This branch includes a **Tauri desktop application** setup for running TaskForge
 
 2. **Run in development mode:**
    ```bash
-   bun tauri dev
+   bun run tauri dev
    ```
    This will:
-   - Start the Next.js development server on `http://localhost:3000`
+   - Start the Vite development server on `http://localhost:5173`
    - Launch the Tauri desktop window pointing to the dev server
    - Hot-reload enabled for both frontend and backend changes
 
@@ -118,7 +123,7 @@ Build the desktop app for your platform:
 
 ```bash
 # Build for current platform
-bun run build
+bun run tauri build
 
 ```
 
@@ -130,21 +135,17 @@ bun run build
 #### Available Tauri Scripts
 
 ```bash
-# Development mode (Rust + Next.js hot reload + Desktop window)
-bun tauri dev
+# Development mode (Rust + Vite hot reload + Desktop window)
+bun run tauri dev
 
 # Production build
-bun tauri build
+bun run tauri build
 
-# Aliases
-bun run tauri:dev
-bun run tauri:build
+# Build only the frontend (used internally by Tauri)
+bun run build
 
-# Build only the Next.js frontend (used internally by Tauri)
-bun run next:build
-
-# Run Next.js dev server only
-bun run next:dev
+# Run the Vite dev server only
+bun run dev
 ```
 
 ### Tauri Project Structure
@@ -167,10 +168,10 @@ src-tauri/
 **`src-tauri/tauri.conf.json`** contains Tauri settings:
 
 - **`build`**: Build & dev commands
-  - `beforeDevCommand`: Runs `bun run next:dev` before starting Tauri dev
-  - `beforeBuildCommand`: Runs `bun run next:build` before production build
-  - `frontendDist`: Points to `.next` (Next.js output)
-  - `devUrl`: Points to `http://localhost:3000` (Next.js dev server)
+  - `beforeDevCommand`: Runs `bun run dev` before starting Tauri dev
+  - `beforeBuildCommand`: Runs `bun run build` before production build
+  - `frontendDist`: Points to `../dist` (Vite build output)
+  - `devUrl`: Points to `http://localhost:5173` (Vite dev server)
 
 - **`app`**: Window configuration
   - Window size: 1200x900
@@ -216,7 +217,7 @@ async function greet() {
 1. **Console logs in Tauri window**: Press `Ctrl+Shift+I` to open DevTools
 2. **Rust logs**: Check terminal output where you ran `bun run dev`
 3. **Common issues**:
-   - **Port 3000 in use**: Kill the process or change `devUrl` in `tauri.conf.json`
+   - **Port 5173 in use**: Kill the process or change `devUrl` in `tauri.conf.json` and the port in `vite.config.js`
    - **Build fails**: Ensure Rust is installed with `rustc --version`
    - **Icon issues**: Regenerate icons in `src-tauri/icons/` if needed
 
@@ -355,33 +356,27 @@ We use **pure CSS with CSS Modules** instead of Tailwind CSS for:
 
 **For Web Development (Browser Only):**
 ```bash
-# Start Next.js development server with hot reload
+# Start Vite development server with hot reload
 bun run dev
 
-# Build Next.js for production
+# Build the frontend for production
 bun run build
+
+# Preview the production build locally
+bun run preview
 ```
 
 **For Desktop App Development (Tauri + Browser):**
 ```bash
-# Start Tauri development mode (includes Next.js dev server and desktop window)
-bun tauri dev
+# Start Tauri development mode (includes Vite dev server and desktop window)
+bun run tauri dev
 
 # Build desktop app for current platform
-bun tauri build
+bun run tauri build
 ```
 
-**Aliases & Other:**
+**Other:**
 ```bash
-# Tauri dev alias
-bun run tauri:dev
-
-# Tauri build alias
-bun run tauri:build
-
-# Start production server
-bun start
-
 # Run ESLint
 bun run lint
 ```
@@ -390,7 +385,7 @@ bun run lint
 
 1. Create a new branch for your feature
 2. Make changes to components/pages
-3. Test locally at `http://localhost:3000`
+3. Test locally at `http://localhost:5173`
 4. Ensure linting passes: `bun run lint`
 5. Commit and push changes
 
@@ -440,22 +435,14 @@ The client automatically:
 bun run build
 ```
 
-This creates an optimized production build in the `.next` directory.
-
-### Docker Deployment
-
-A `Dockerfile` is included for containerized deployment:
-
-```bash
-docker build -t taskforge-frontend .
-docker run -p 3000:3000 taskforge-frontend
-```
+This creates an optimized production build in the `dist` directory.
 
 ### Environment Variables for Production
 
-Update `.env.local` with production values:
+Update `.env.production` with production values:
 ```env
-NEXT_PUBLIC_API_URL=https://api.example.com
+VITE_API_URL=https://api.example.com
+VITE_WS_URL=wss://api.example.com
 ```
 
 ## API Documentation
@@ -485,27 +472,27 @@ For complete API documentation, see the [TaskForge Backend](https://github.com/t
 
 ## Troubleshooting
 
-### Port 3000 Already in Use
+### Port 5173 Already in Use
 ```bash
-# Kill process on port 3000
-lsof -ti:3000 | xargs kill -9
+# Kill process on port 5173
+lsof -ti:5173 | xargs kill -9
 
 # Or specify a different port
-bun run dev -- -p 3001
+bun run dev -- --port 5174
 ```
 
 ### API Connection Issues
 
 1. Ensure Django backend is running on `http://localhost:8000`
-2. Check `NEXT_PUBLIC_API_URL` in `.env.local`
+2. Check `VITE_API_URL` in `.env`
 3. Verify CORS settings in Django backend
 4. Check browser console for network errors
 
 ### Clear Cached Data
 
 ```bash
-# Clear Next.js cache
-rm -rf .next
+# Clear the build output
+rm -rf dist
 
 # Clear Zustand store (browser dev tools)
 # Open DevTools → Application → Local Storage → Remove taskforge entries
