@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/Taskforge-New-Logo.svg" alt="TaskForge logo" width="110"/>
+</p>
+
 # TaskForge Desktop
 
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev)

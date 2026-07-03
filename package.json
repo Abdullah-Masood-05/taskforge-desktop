@@ -1,6 +1,6 @@
 {
-  "name": "taskforge-frontend",
-  "version": "0.1.0",
+  "name": "taskforge-desktop",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "scripts": {
