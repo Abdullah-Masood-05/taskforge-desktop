@@ -2,14 +2,16 @@
   <img src="public/Taskforge-New-Logo.svg" alt="TaskForge logo" width="110"/>
 </p>
 
-# TaskForge Desktop
+<h1 align="center">TaskForge Desktop</h1>
 
-[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev)
-[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=0B1F26)](https://react.dev)
-[![Tauri](https://img.shields.io/badge/Tauri-2-24C6DC?logo=tauri&logoColor=white)](https://tauri.app)
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES2024-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Bun](https://img.shields.io/badge/Bun-latest-000000?logo=bun&logoColor=white)](https://bun.sh)
-[![CSS Modules](https://img.shields.io/badge/CSS%20Modules-styled-1572B6?logo=css3&logoColor=white)](https://github.com/css-modules/css-modules)
+<p align="center">
+  <a href="https://vite.dev"><img src="https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white" alt="Vite"/></a>
+  <a href="https://react.dev"><img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=0B1F26" alt="React"/></a>
+  <a href="https://tauri.app"><img src="https://img.shields.io/badge/Tauri-2-24C6DC?logo=tauri&logoColor=white" alt="Tauri"/></a>
+  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img src="https://img.shields.io/badge/JavaScript-ES2024-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript"/></a>
+  <a href="https://bun.sh"><img src="https://img.shields.io/badge/Bun-latest-000000?logo=bun&logoColor=white" alt="Bun"/></a>
+  <a href="https://github.com/css-modules/css-modules"><img src="https://img.shields.io/badge/CSS%20Modules-styled-1572B6?logo=css3&logoColor=white" alt="CSS Modules"/></a>
+</p>
 
 The native desktop app for TaskForge — the same task and organization management UI as the web client, built with Vite + React 19 and React Router, packaged as a lightweight Windows/macOS/Linux application with Tauri 2. Ships the full project dashboard: Kanban board, progress header, timeline, velocity and distribution analytics, and a live activity feed.
 
