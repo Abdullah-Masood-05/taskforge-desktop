@@ -13,9 +13,9 @@
   <a href="https://github.com/css-modules/css-modules"><img src="https://img.shields.io/badge/CSS%20Modules-styled-1572B6?logo=css3&logoColor=white" alt="CSS Modules"/></a>
 </p>
 
-The native desktop app for TaskForge — the same task and organization management UI as the web client, built with Vite + React 19 and React Router, packaged as a lightweight Windows/macOS/Linux application with Tauri 2. Ships the full project dashboard: Kanban board, progress header, timeline, velocity and distribution analytics, and a live activity feed.
+The native desktop app for TaskForge, built with Vite + React 19 and React Router, packaged with Tauri 2 for Windows, macOS, and Linux. It includes the full project dashboard with Kanban board, progress header, timeline, velocity and distribution analytics, and a live activity feed.
 
-**🖥️ There is no server runtime in this app — the UI is a static Vite bundle served inside a Tauri webview, talking to the TaskForge backend API over HTTP/WebSocket (see `.env.example`).**
+**Note:** The UI is a static Vite bundle served inside a Tauri webview. It connects to the TaskForge backend API over HTTP/WebSocket (see `.env.example`).
 
 ## Features
 
@@ -41,7 +41,7 @@ The native desktop app for TaskForge — the same task and organization manageme
 - **Runtime**: [Bun](https://bun.sh)
 - **Language**: JavaScript (ES2024) + Rust
 - **Charts**: `recharts` - Dashboard analytics (velocity & distribution)
-- **Styling**: Pure CSS with CSS Modules + Custom Design System
+- **Styling**: CSS Modules + Custom Design System
 - **State Management**: 
   - `zustand` - Client/auth state
   - `@tanstack/react-query` - Server state & API caching
@@ -528,7 +528,7 @@ rm -rf dist
 
 ## License
 
-This project is licensed under the **GNU General Public License v3.0** – see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **GNU General Public License v3.0**. See the [LICENSE](LICENSE) file for details.
 
 ## Support
 
