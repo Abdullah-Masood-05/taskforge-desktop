@@ -11,6 +11,11 @@
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img src="https://img.shields.io/badge/JavaScript-ES2024-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript"/></a>
   <a href="https://bun.sh"><img src="https://img.shields.io/badge/Bun-latest-000000?logo=bun&logoColor=white" alt="Bun"/></a>
   <a href="https://github.com/css-modules/css-modules"><img src="https://img.shields.io/badge/CSS%20Modules-styled-1572B6?logo=css3&logoColor=white" alt="CSS Modules"/></a>
+  <a href="https://github.com/Abdullah-Masood-05/taskforge-desktop/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Abdullah-Masood-05/taskforge-desktop?style=social&logo=github"></a>
+</p>
+
+<p align="center">
+  ⭐ <b>Enjoying TaskForge Desktop?</b> If it's useful to you, please <a href="https://github.com/Abdullah-Masood-05/taskforge-desktop">star it on GitHub</a>. It's free and it helps other developers find it.
 </p>
 
 The native desktop app for TaskForge, built with Vite + React 19 and React Router, packaged with Tauri 2 for Windows, macOS, and Linux. It includes the full project dashboard with Kanban board, progress header, timeline, velocity and distribution analytics, and a live activity feed.
